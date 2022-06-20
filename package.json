@@ -3,7 +3,14 @@
   "version": "1.0.0",
   "description": "graphql-postgres-prisma-typescript boilerplate for authentication and authorization",
   "scripts": {
-    "start": "nodemon --exec ts-node src/index.ts",
+    "dev": "nodemon --exec ts-node index.ts",
+    "start": "node dist/server",
+    "clean": "rm -rf dist",
+    "build": "npm -s run clean && npm -s run generate && tsc",
+    "generate": "npm -s run generate:prisma && npm -s run generate:nexus",
+    "generate:prisma": "prisma generate",
+    "generate:nexus": "ts-node --transpile-only src/schema",
+    "test": "jest",
     "format": "prettier --write 'src/**/*.{ts,js}'"
   },
   "keywords": [
@@ -23,21 +30,15 @@
     "graphql": "^16.5.0"
   },
   "devDependencies": {
-    "@babel/core": "^7.18.5",
-    "@babel/eslint-parser": "^7.18.2",
+    "@types/jest": "^28.1.2",
     "@types/node": "^18.0.0",
-    "eslint": "^8.18.0",
-    "eslint-config-airbnb": "^19.0.4",
-    "eslint-config-prettier": "^8.5.0",
-    "eslint-plugin-import": "^2.26.0",
-    "eslint-plugin-jsx-a11y": "^6.5.1",
-    "eslint-plugin-prettier": "^4.0.0",
-    "eslint-plugin-react": "^7.30.0",
-    "eslint-plugin-react-hooks": "^4.6.0",
     "husky": "^8.0.1",
+    "jest": "^28.1.1",
     "lint-staged": "^13.0.2",
     "nodemon": "^2.0.16",
     "prettier": "^2.7.1",
+    "prettier-plugin-prisma": "^3.14.0",
+    "ts-jest": "^28.0.5",
     "ts-node": "^10.8.1",
     "typescript": "^4.7.4"
   },
@@ -50,6 +51,20 @@
     "*.{ts,js,json,md}": [
       "yarn format",
       "git add"
+    ]
+  },
+  "jest": {
+    "transform": {
+      "^.+\\.tsx?$": "ts-jest"
+    },
+    "testRegex": "(/__tests__/.*|(\\.|/)(test|spec))\\.(jsx?|tsx?)$",
+    "moduleFileExtensions": [
+      "ts",
+      "tsx",
+      "js",
+      "jsx",
+      "json",
+      "node"
     ]
   }
 }
